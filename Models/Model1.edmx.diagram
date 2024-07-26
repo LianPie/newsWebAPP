@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="86c03f241f68443f81521f0d071e235b" Name="Diagram1">
+        <EntityTypeShape EntityType="newswebappModel.category" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="newswebappModel.news" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="newswebappModel.tag" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="newswebappModel.ticket" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="newswebappModel.user" Width="1.5" PointX="2.75" PointY="4.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

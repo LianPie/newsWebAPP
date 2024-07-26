@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>Register</h2>
+
+<script>
+    function checkPasswords() {
+    var password = document.getElementById("password");
+    var confirmPassword = document.getElementById("ConfirmPassword");   
+    var errorMessage = document.getElementById("passwordMismatch");
+
+
+    if (password.value !== confirmPassword.value) {
+        errorMessage.textContent = "Passwords do not match.";
+        return false;
+    }
+    else {
+        errorMessage.textContent = "";
+        return true;
+        }
+}
+</script>
+<form asp-action="Register" asp-controller="Account" method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="form-group">
+        <label  
+               asp-for="username"> username  </label>
+        <input asp-for="username" class="form-control" required />
+        <span asp-validation-for="username" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+
+        <label asp-for="password"> password </label>
+        <input asp-for="password" id="password" 
+               type="password" class="form-control" required/>
+        <span asp-validation-for="password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword">Confirm Password</label>
+        <input asp-for="ConfirmPassword" id="ConfirmPassword"
+               type="password" class="form-control" oninput="checkPasswords()" required />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        <span id="passwordMismatch" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="displayname">display name</label>
+
+        <input asp-for="displayname" class="form-control" required />
+        <span asp-validation-for="displayname" class="text-danger" ></span>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+
