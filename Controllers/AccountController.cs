@@ -55,30 +55,44 @@ namespace WebApplication1.Controllers
             if (ModelState.IsValid)
 
             {
+
                 // Replace this with actual user creation logic, including password hashing
                 // and storing user information in a database
                 /*var allusers = db.users.ToList();
-
-                foreach (var nuser in allusers)
+                
+                foreach (var user in allusers)
+                    
                 {
-                    if (model.username == nuser.ToString())
+                    if (model.username.ToString() == user.usename.ToString())
                     {
                         ModelState.AddModelError("", "username already exists");
-                        break;
+                        return RedirectToAction("Register");
                     }
                 }*/
 
-                /*db.users.Add(new user
-                      {
-                          usename = model.username,
-                          password = model.password,
-                          displayname = model.displayname
-                      });
-                      db.SaveChanges();
-                }*/
-
-                return RedirectToAction("Login");
+                db.users.Add( new user
+                {
+                    usename = model.username,
+                    password = model.password,
+                    displayname = model.displayname
+                });
+                db.SaveChanges();
+                return RedirectToAction("Home","Index");
+                    
             }
+            
+
+            /*db.users.Add(new user
+                  {
+                      usename = model.username,
+                      password = model.password,
+                      displayname = model.displayname
+                  });
+                  db.SaveChanges();
+            }*/
+
+            // return RedirectToAction("Login");
+
             return View(model);
         }
     }
