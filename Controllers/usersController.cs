@@ -17,23 +17,33 @@ namespace WebApplication1.Controllers
         // GET: users
         public ActionResult Index()
         {
-            return View(db.users.ToList());
+            if (Session["User"] != null)
+            {
+                if (Session["Userid"] == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                user user = db.users.Find(Session["Userid"]);
+                if (user == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(user);
+            }
+            else
+                return RedirectToAction("Login");
+        }// GET: users
+        public ActionResult allusers()
+        {
+            if (Session["User"] != null)
+            {
+                return View(db.users.ToList());
+            }
+            else
+                return RedirectToAction("Login");
         }
 
-        // GET: users/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            user user = db.users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
-        }
+        //registeration
 
         // GET: users/Create
         public ActionResult Register()
@@ -50,26 +60,47 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                //check if the username exists
                 var check = db.users.FirstOrDefault(u => u.usename == user.usename);
+                //checks username and password field in form
                 if (user.usename != null && user.password != null)
                 {
                     if (check != null)
                     {
                         ModelState.AddModelError("", " username already exists");
                     }
+                    //if username is valid create user add to db
                     else
                     {
                         db.users.Add(user);
                         db.SaveChanges();
+
+                        //session start
+                        Session["User"] = user.usename;
+                        Session["Userid"] = user.ID;
+
                         return RedirectToAction("Index");
                     }
                 }
-                else {
-                    ModelState.AddModelError(""," username and password field can not be empty");
-                        }
+                else
+                {
+                    ModelState.AddModelError("",
+                        "username and password field can not be empty");
+                }
             }
-
             return View(user);
+        }
+
+        // GET: users/logout
+        public ActionResult Logout()
+        {
+            //session check, if exists -> destroy session
+            if (Session["User"] != null)
+            {
+                Session.Abandon();
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: users/Login
@@ -85,9 +116,14 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
+                //check if user exists
                 var existingUser = db.users.FirstOrDefault(u => u.usename == user.usename );
                 if (existingUser != null && existingUser.password == user.password)
                 {
+                    //session start
+                    Session["User"] = existingUser.usename;
+                    Session["Userid"] = existingUser.ID;
+
                     return RedirectToAction("Index");
                 }
                 else
@@ -102,16 +138,22 @@ namespace WebApplication1.Controllers
         // GET: users/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Session["User"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+                if (Session["Userid"] == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                user user = db.users.Find(Session["Userid"]);
+                if (user == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(user);
             }
-            user user = db.users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
+            else
+                return View("Login");
         }
 
         // POST: users/Edit/5
@@ -135,16 +177,21 @@ namespace WebApplication1.Controllers
         // GET: users/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Session["User"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Session["Userid"] == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                user user = db.users.Find(Session["Userid"]);
+                if (user == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(user);
             }
-            user user = db.users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
+            else
+                return View("Login");
         }
 
         // POST: users/Delete/5
