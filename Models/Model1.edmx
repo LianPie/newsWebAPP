@@ -55,6 +55,7 @@
           <Property Name="usename" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="displayname" Type="nvarchar" MaxLength="50" />
+          <Property Name="role" Type="int" Nullable="false" />
         </EntityType>
         <EntityContainer Name="newswebappModelStoreContainer">
           <EntitySet Name="category" EntityType="Self.category" Schema="dbo" store:Type="Tables" />
@@ -124,6 +125,7 @@
           <Property Name="usename" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="displayname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="role" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -180,6 +182,7 @@
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="newswebappModel.user">
               <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="role" ColumnName="role" />
                 <ScalarProperty Name="displayname" ColumnName="displayname" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="usename" ColumnName="usename" />

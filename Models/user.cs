@@ -18,5 +18,6 @@ namespace WebApplication1.Models
         public string usename { get; set; }
         public string password { get; set; }
         public string displayname { get; set; }
+        public int role { get; set; }
     }
 }

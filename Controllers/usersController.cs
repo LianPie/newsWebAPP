@@ -16,7 +16,15 @@ namespace WebApplication1.Controllers
 
         // GET: users
         public ActionResult Index()
-        {
+        {   if (Convert.ToInt32(Session["Userrole"]) > 0)
+            {
+                @ViewBag.role = "admin";
+            }
+            else
+            {
+                @ViewBag.role = "user";
+            }
+
             if (Session["User"] != null)
             {
                 if (Session["Userid"] == null)
@@ -33,11 +41,18 @@ namespace WebApplication1.Controllers
             else
                 return RedirectToAction("Login");
         }// GET: users
+
         public ActionResult allusers()
         {
             if (Session["User"] != null)
             {
-                return View(db.users.ToList());
+                if (Convert.ToInt32(Session["Userrole"]) == 1)
+                {
+                    return View(db.users.ToList());
+                }
+                else { 
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
             }
             else
                 return RedirectToAction("Login");
@@ -56,8 +71,8 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register([Bind(Include = "ID,usename,password,displayname")] user user)
-        {
+        public ActionResult Register([Bind(Include = "ID,usename,password,displayname,role")] user user)
+        {   
             if (ModelState.IsValid)
             {
 
@@ -79,6 +94,7 @@ namespace WebApplication1.Controllers
                         //session start
                         Session["User"] = user.usename;
                         Session["Userid"] = user.ID;
+                        Session["Userrole"] = user.role;
 
                         return RedirectToAction("Index");
                     }
@@ -123,6 +139,7 @@ namespace WebApplication1.Controllers
                     //session start
                     Session["User"] = existingUser.usename;
                     Session["Userid"] = existingUser.ID;
+                    Session["Userrole"] = existingUser.role;
 
                     return RedirectToAction("Index");
                 }
@@ -161,7 +178,7 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,usename,password,displayname")] user user)
+        public ActionResult Edit([Bind(Include = "ID,usename,password,displayname,role")] user user)
         {
             if (ModelState.IsValid)
             {
