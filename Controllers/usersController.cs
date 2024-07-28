@@ -197,12 +197,12 @@ namespace WebApplication1.Controllers
         // POST: users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed()
+        public ActionResult DeleteConfirmed(int id)
         {
-            user user = db.users.Find(Session["Userid"]);
+            user user = db.users.Find(id);
             db.users.Remove(user);
             db.SaveChanges();
-            return Logout();
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
