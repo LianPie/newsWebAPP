@@ -6,38 +6,37 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using WebApplication1.Models;
 
-namespace WebApplication1.Controllers
+namespace WebApplication1.Models
 {
-    public class categoriesController : Controller
+    public class tagsController : Controller
     {
         private newswebappEntities db = new newswebappEntities();
 
-        // GET: categories
+        // GET: tags
         public ActionResult Index()
         {
-            return View(db.categories.ToList());
+            return View(db.tags.ToList());
         }
 
-        // GET: categories/Details/5
+        // GET: tags/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            category category = db.categories.Find(id);
-            ViewBag.title = category.title;
-            if (category == null)
+            tag tags = db.tags.Find(id);
+            ViewBag.title = tags.title;
+            if (tags == null)
             {
                 return HttpNotFound();
             }
-            //search for record that contains "cat title" in cat field.
-            return View(db.news.Where(n => n.cat.Contains(category.title)));
+            //search for record that contains "tag title" in tag field.
+            return View(db.news.Where(n => n.tag.Contains(tags.title)));
         }
 
-        // GET: categories/Create
+        // GET: tags/Create
         public ActionResult Create()
         {
             if (Session["User"] != null)
@@ -52,80 +51,80 @@ namespace WebApplication1.Controllers
                 }
             }
             else
-                return RedirectToAction("index","home");
+                return RedirectToAction("index", "home");
         }
 
-        // POST: categories/Create
+        // POST: tags/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,link,title")] category category)
+        public ActionResult Create([Bind(Include = "code,link,title")] tag tag)
         {
             if (ModelState.IsValid)
             {
-                category.link = "categories/"+category.title;
-                db.categories.Add(category);
+                tag.link = "tags/"+tag.title;
+                db.tags.Add(tag);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(category);
+            return View(tag);
         }
 
-        // GET: categories/Edit/5
+        // GET: tags/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            category category = db.categories.Find(id);
-            if (category == null)
+            tag tag = db.tags.Find(id);
+            if (tag == null)
             {
                 return HttpNotFound();
             }
-            return View(category);
+            return View(tag);
         }
 
-        // POST: categories/Edit/5
+        // POST: tags/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,link,title")] category category)
+        public ActionResult Edit([Bind(Include = "code,link,title")] tag tag)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(category).State = EntityState.Modified;
+                db.Entry(tag).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(category);
+            return View(tag);
         }
 
-        // GET: categories/Delete/5
+        // GET: tags/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            category category = db.categories.Find(id);
-            if (category == null)
+            tag tag = db.tags.Find(id);
+            if (tag == null)
             {
                 return HttpNotFound();
             }
-            return View(category);
+            return View(tag);
         }
 
-        // POST: categories/Delete/5
+        // POST: tags/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            category category = db.categories.Find(id);
-            db.categories.Remove(category);
+            tag tag = db.tags.Find(id);
+            db.tags.Remove(tag);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

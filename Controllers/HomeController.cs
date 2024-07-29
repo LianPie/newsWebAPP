@@ -13,21 +13,27 @@ namespace WebApplication1.Controllers
 
         public ActionResult Index()
         {
+            setTitle();
             return View();
         }
 
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
+            setTitle();
             return View();
         }
 
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-
+            setTitle();
             return View();
+        }
+
+        void setTitle()
+        {
+            ViewBag.titlemenu = "hi user";
         }
     }
 }

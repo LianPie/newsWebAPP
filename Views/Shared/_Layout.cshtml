@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    string title = ViewBag.titlemenu;
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -21,9 +24,9 @@
                     <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("user setting", "index", "users", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("news", "index", "users", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("news", "Index", "news", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("categories", "index", "categories", new { area = "" }, new { @class = "nav-link" })</li>
-
+                    <li>@Html.ActionLink("tags", "index", "tags", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
             </div>
         </div>

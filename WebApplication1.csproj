@@ -154,6 +154,7 @@
     </Compile>
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Register.cs" />
+    <Compile Include="Controllers\tagsController.cs" />
     <Compile Include="Models\TheNews.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
@@ -268,6 +269,11 @@
     <Content Include="Views\news\Details.cshtml" />
     <Content Include="Views\news\Edit.cshtml" />
     <Content Include="Views\news\Index.cshtml" />
+    <Content Include="Views\tags\Create.cshtml" />
+    <Content Include="Views\tags\Delete.cshtml" />
+    <Content Include="Views\tags\Details.cshtml" />
+    <Content Include="Views\tags\Edit.cshtml" />
+    <Content Include="Views\tags\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

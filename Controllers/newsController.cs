@@ -38,7 +38,23 @@ namespace WebApplication1.Controllers
         // GET: news/Create
         public ActionResult Create()
         {
-            return View();
+            if (Session["User"] != null)
+            {
+                var news = db.news.ToList();
+                var cat = db.categories.ToList();
+                ViewBag.categoryTitle = cat;
+                var tags= db.tags.ToList();
+                ViewBag.tagTitle = tags;
+              //var models=  new Tuple<List<category>, List<tag>>(cat, tags);
+                return View();
+            }
+            if (Session["User"] != null)
+            {
+                ViewBag.categoryTitle = db.categories.ToList();
+                return View();
+            }
+            else
+                return RedirectToAction("login", "users");
         }
 
         // POST: news/Create
@@ -50,6 +66,7 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 db.news.Add(news);
                 db.SaveChanges();
                 return RedirectToAction("Index");
