@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -40,11 +42,7 @@ namespace WebApplication1.Controllers
         {
             if (Session["User"] != null)
             {
-                var news = db.news.ToList();
-                var cat = db.categories.ToList();
-                ViewBag.categoryTitle = cat;
-                var tags= db.tags.ToList();
-                ViewBag.tagTitle = tags;
+                setLists();
               //var models=  new Tuple<List<category>, List<tag>>(cat, tags);
                 return View();
             }
@@ -66,10 +64,49 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (Request.Files.Count > 0)
+                {
+                    setLists();
+                    var image = Request.Files[0];
+                    if ( image.ContentLength > 1024 * 1024)
+                    {
+                        ModelState.AddModelError("imageFile", "File size cannot exceed 1MB.");
+                        return RedirectToAction("Index");
+                    }
+
+                    // Check file extension
+                    string fileExtension = Path.GetExtension(image.FileName).ToLower();
+                    //if (fileExtension != ".jpg" || fileExtension != ".jpeg" || fileExtension != ".png")
+                    if (!new[] { ".jpg", ".jpeg", ".png" }.Contains(fileExtension))
+                    {
+                        ModelState.AddModelError("image", "Only JPG, JPEG, and PNG files are allowed.");
+                    }
+                    else
+                    {
+                        int length = 10; // Desired length of the random string
+                        string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                        char[] chars = new char[length];
+                        Random rand = new Random();
+                        string imgname="";
+                        for (int i = 0; i < length; i++)
+                        {
+                            chars[i] = allowedChars[rand.Next(0, allowedChars.Length)];
+                            imgname = "" + chars[i];
+                        }
+
+                        image.SaveAs(Server.MapPath($"~/Media/news/"+imgname+fileExtension));
+                    }
+
+
+
+                }
+                /*
+                Request.Files[i].SaveAs(Server.MapPath($"~/Media/User/avatar.png"));
 
                 db.news.Add(news);
                 db.SaveChanges();
                 return RedirectToAction("Index");
+            */
             }
 
             return View(news);
@@ -130,6 +167,14 @@ namespace WebApplication1.Controllers
             db.news.Remove(news);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+        void setLists()
+        {
+            var news = db.news.ToList();
+            var cat = db.categories.ToList();
+            ViewBag.categoryTitle = cat;
+            var tags = db.tags.ToList();
+            ViewBag.tagTitle = tags;
         }
 
         protected override void Dispose(bool disposing)
