@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<WebApplication1.Models.news>
-
 @{
     ViewBag.Title = "Index";
 }
@@ -15,28 +14,13 @@
             @Html.DisplayNameFor(model => model.title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.image)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.link)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.summary)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.cat)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tag)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.publishDate)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.userID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Content)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.views)
@@ -50,28 +34,13 @@
             @Html.DisplayFor(modelItem => item.title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.image)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.link)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.summary)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.cat)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tag)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.publishDate)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.userID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Content)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.views)

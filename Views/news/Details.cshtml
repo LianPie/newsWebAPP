@@ -9,7 +9,7 @@
 <div>
     <h4>news</h4>
     <hr />
-    <dl class="dl-horizontal">
+    <dl>
         <dt>
             @Html.DisplayNameFor(model => model.title)
         </dt>
@@ -23,6 +23,7 @@
         </dt>
 
         <dd>
+            <img src="@Model.image" />
             @Html.DisplayFor(model => model.image)
         </dd>
 
