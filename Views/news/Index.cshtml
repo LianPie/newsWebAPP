@@ -1,4 +1,5 @@
-﻿@model IEnumerable<WebApplication1.Models.news>
+﻿@using WebApplication1.Models
+@model List<newsModel>
 @{
     ViewBag.Title = "Index";
 }
@@ -11,19 +12,22 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.title)
+            Title
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.cat)
+            Category
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.publishDate)
+            Tag
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.userID)
+            Publisher
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.views)
+            Published On
+        </th>
+        <th>
+            views
         </th>
         <th></th>
     </tr>
@@ -31,24 +35,27 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.title)
+            @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.cat)
+            @Html.DisplayFor(modelItem => item.category)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.publishDate)
+            @Html.DisplayFor(modelItem => item.tag)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.userID)
+            @Html.DisplayFor(modelItem => item.DisplayName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.date)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.views)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.ActionLink("Edit", "Edit", new { id = item.NewsID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.NewsID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.NewsID })
         </td>
     </tr>
 }
