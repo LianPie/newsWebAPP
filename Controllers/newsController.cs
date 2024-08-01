@@ -15,29 +15,14 @@ namespace WebApplication1.Controllers
     public class newsController : Controller
     {
         private newswebappEntities db = new newswebappEntities();
-        
 
         // GET: news
         public ActionResult Index()
         {
-            var models = (from user in db.users // Access Users DbSet
-                        join news in db.news on user.ID equals news.userID into newsGroup // Join News DbSet
-                        from news in newsGroup.DefaultIfEmpty() // Left outer join
-                        where news != null // Filter based on existence of news record
-                        select new newsModel
-                        {
-                            DisplayName = user != null ? user.displayname : null,
-                            NewsID = news.ID, // Use null-conditional operator for missing news
-                            Title = news.title,
-                            Image = news.image,
-                            category = news.cat,
-                            tag = news.tag,
-                            date = news.publishDate,
-                            views = news.views
-                        }).ToList();
-
-
-            return View(models);
+            var news = db.news.ToList();
+            var users = db.users.ToList();
+            var models = new Tuple<List<news>, List<user>>(news, users);
+            return View(db.news.ToList());
         }
 
         // GET: news/Details/5
@@ -53,7 +38,7 @@ namespace WebApplication1.Controllers
                 return HttpNotFound();
             }
             var user = db.users.Find(news.userID);
-           ViewBag.user = user;
+           // var model = new Tuple<object,object>(news,user);
             return View(news);
         }
 

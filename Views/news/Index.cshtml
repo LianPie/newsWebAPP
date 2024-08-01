@@ -1,5 +1,4 @@
-﻿@using WebApplication1.Models
-@model List<newsModel>
+﻿@model IEnumerable<WebApplication1.Models.news>
 @{
     ViewBag.Title = "Index";
 }
@@ -12,22 +11,19 @@
 <table class="table">
     <tr>
         <th>
-            Title
+            @Html.DisplayNameFor(model => model.title)
         </th>
         <th>
-            Category
+            @Html.DisplayNameFor(model => model.cat)
         </th>
         <th>
-            Tag
+            @Html.DisplayNameFor(model => model.publishDate)
         </th>
         <th>
-            Publisher
+            @Html.DisplayNameFor(model => model.userID)
         </th>
         <th>
-            Published On
-        </th>
-        <th>
-            views
+            @Html.DisplayNameFor(model => model.views)
         </th>
         <th></th>
     </tr>
@@ -35,27 +31,24 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Title)
+            @Html.DisplayFor(modelItem => item.title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.category)
+            @Html.DisplayFor(modelItem => item.cat)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.tag)
+            @Html.DisplayFor(modelItem => item.publishDate)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DisplayName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.date)
+            @Html.DisplayFor(modelItem => item.userID)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.views)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.NewsID }) |
-            @Html.ActionLink("Details", "Details", new { id = item.NewsID }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.NewsID })
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
         </td>
     </tr>
 }

@@ -1,9 +1,7 @@
-﻿@using WebApplication1.Models
-@model news
+﻿@model WebApplication1.Models.news
 
 @{
     ViewBag.Title = "Details";
-    var _user = ViewBag.user as user;
 }
 
 <h2>Details</h2>
@@ -25,8 +23,8 @@
         </dt>
 
         <dd>
-            <img src="@Url.Content(Model.image)" height="250" width="200" />
-
+            <img src="@Model.image" />
+            @Html.DisplayFor(model => model.image)
         </dd>
 
         <dt>
@@ -70,11 +68,11 @@
         </dd>
 
         <dt>
-            original poster
+            @Html.DisplayNameFor(model => model.userID)
         </dt>
 
         <dd>
-            @_user.displayname
+            @Html.DisplayFor(model => model.userID)
         </dd>
 
         <dt>
