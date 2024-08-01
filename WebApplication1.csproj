@@ -275,6 +275,7 @@
     <Content Include="Views\tags\Details.cshtml" />
     <Content Include="Views\tags\Edit.cshtml" />
     <Content Include="Views\tags\Index.cshtml" />
+    <Content Include="Views\news\Latest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

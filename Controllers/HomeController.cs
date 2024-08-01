@@ -13,6 +13,8 @@ namespace WebApplication1.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.newsCount = db.news.Count();
+            ViewBag.views = "";
             setTitle();
             return View();
         }
