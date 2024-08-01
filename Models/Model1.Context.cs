@@ -30,6 +30,5 @@ namespace WebApplication1.Models
         public virtual DbSet<tag> tags { get; set; }
         public virtual DbSet<ticket> tickets { get; set; }
         public virtual DbSet<user> users { get; set; }
-        public virtual DbSet<response> responses { get; set; }
     }
 }

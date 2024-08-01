@@ -29,16 +29,6 @@
           <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
           <Property Name="views" Type="int" />
         </EntityType>
-        <EntityType Name="response">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="title" Type="nchar" MaxLength="10" />
-          <Property Name="content" Type="nchar" MaxLength="10" />
-          <Property Name="adminid" Type="int" />
-          <Property Name="ticketid" Type="int" />
-        </EntityType>
         <EntityType Name="tag">
           <Key>
             <PropertyRef Name="code" />
@@ -52,11 +42,10 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="title" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="content" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="priority" Type="int" Nullable="false" />
-          <Property Name="senderid" Type="int" Nullable="false" />
-          <Property Name="status" Type="int" />
+          <Property Name="title" Type="nvarchar" MaxLength="50" />
+          <Property Name="content" Type="nvarchar(max)" />
+          <Property Name="priority" Type="nvarchar" MaxLength="50" />
+          <Property Name="senderid" Type="int" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -71,7 +60,6 @@
         <EntityContainer Name="newswebappModelStoreContainer">
           <EntitySet Name="category" EntityType="Self.category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="news" EntityType="Self.news" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="response" EntityType="Self.response" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tag" EntityType="Self.tag" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ticket" EntityType="Self.ticket" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
@@ -86,7 +74,6 @@
           <EntitySet Name="tags" EntityType="newswebappModel.tag" />
           <EntitySet Name="tickets" EntityType="newswebappModel.ticket" />
           <EntitySet Name="users" EntityType="newswebappModel.user" />
-          <EntitySet Name="responses" EntityType="newswebappModel.response" />
         </EntityContainer>
         <EntityType Name="category">
           <Key>
@@ -125,11 +112,10 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="priority" Type="Int32" Nullable="false" />
-          <Property Name="senderid" Type="Int32" Nullable="false" />
-          <Property Name="status" Type="Int32" />
+          <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="priority" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="senderid" Type="Int32" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -140,16 +126,6 @@
           <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="displayname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="role" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="response">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="title" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="content" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="adminid" Type="Int32" />
-          <Property Name="ticketid" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -195,7 +171,6 @@
           <EntitySetMapping Name="tickets">
             <EntityTypeMapping TypeName="newswebappModel.ticket">
               <MappingFragment StoreEntitySet="ticket">
-                <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="senderid" ColumnName="senderid" />
                 <ScalarProperty Name="priority" ColumnName="priority" />
                 <ScalarProperty Name="content" ColumnName="content" />
@@ -211,17 +186,6 @@
                 <ScalarProperty Name="displayname" ColumnName="displayname" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="usename" ColumnName="usename" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="responses">
-            <EntityTypeMapping TypeName="newswebappModel.response">
-              <MappingFragment StoreEntitySet="response">
-                <ScalarProperty Name="ticketid" ColumnName="ticketid" />
-                <ScalarProperty Name="adminid" ColumnName="adminid" />
-                <ScalarProperty Name="content" ColumnName="content" />
-                <ScalarProperty Name="title" ColumnName="title" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

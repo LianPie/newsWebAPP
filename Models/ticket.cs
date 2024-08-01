@@ -17,8 +17,7 @@ namespace WebApplication1.Models
         public int ID { get; set; }
         public string title { get; set; }
         public string content { get; set; }
-        public int priority { get; set; }
-        public int senderid { get; set; }
-        public Nullable<int> status { get; set; }
+        public string priority { get; set; }
+        public Nullable<int> senderid { get; set; }
     }
 }
