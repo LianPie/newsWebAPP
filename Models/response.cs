@@ -12,13 +12,12 @@ namespace WebApplication1.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ticket
+    public partial class response
     {
         public int ID { get; set; }
         public string title { get; set; }
         public string content { get; set; }
-        public int priority { get; set; }
-        public int senderid { get; set; }
-        public Nullable<int> status { get; set; }
+        public Nullable<int> adminid { get; set; }
+        public Nullable<int> ticketid { get; set; }
     }
 }
