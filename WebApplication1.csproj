@@ -153,6 +153,7 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\newsModel.cs" />
     <Compile Include="Models\Register.cs" />
     <Compile Include="Controllers\tagsController.cs" />
     <Compile Include="Models\TheNews.cs" />

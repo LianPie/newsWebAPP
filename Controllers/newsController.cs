@@ -19,10 +19,29 @@ namespace WebApplication1.Controllers
         // GET: news
         public ActionResult Index()
         {
-            var news = db.news.ToList();
-            var users = db.users.ToList();
-            var models = new Tuple<List<news>, List<user>>(news, users);
-            return View(db.news.ToList());
+            var models = (from user in db.users // Access Users DbSet
+                          join news in db.news on user.ID equals news.userID into newsGroup // Join News DbSet
+                          from news in newsGroup.DefaultIfEmpty() // Left outer join
+                          where news != null // Filter based on existence of news record
+                          select new newsModel
+                          {
+                              DisplayName = user != null ? user.displayname : null,
+                              NewsID = news.ID, // Use null-conditional operator for missing news
+                              Title = news.title,
+                              Image = news.image,
+                              category = news.cat,
+                              tag = news.tag,
+                              date = news.publishDate,
+                              views = news.views
+                          }).ToList();
+
+
+            return View(models);
+        }
+        // GET: news
+        public ActionResult Latest()
+        {
+            return View(db.news.OrderByDescending(v => v.views).ToList());
         }
 
         // GET: news/Details/5
@@ -38,7 +57,21 @@ namespace WebApplication1.Controllers
                 return HttpNotFound();
             }
             var user = db.users.Find(news.userID);
-           // var model = new Tuple<object,object>(news,user);
+            ViewBag.user = user;
+            news.views += 1;
+            db.SaveChanges();
+            /*
+            var key = Request.ServerVariables["REMOTE_ADDR"];
+            var now = DateTime.UtcNow;
+
+                if (now - View.LastVisited > _timeLimit)
+                {
+                    pageView.LastVisited = now;
+                    _pageViews[key] = pageView;
+                    return true; // View counted
+                }
+                return false; // View within time limit, not counted
+            */
             return View(news);
         }
 

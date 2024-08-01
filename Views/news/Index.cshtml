@@ -1,4 +1,7 @@
-﻿@model IEnumerable<WebApplication1.Models.news>
+﻿@using WebApplication1.Models
+@model IEnumerable<newsModel>
+
+
 @{
     ViewBag.Title = "Index";
 }
@@ -11,46 +14,53 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.title)
+            title
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.cat)
+            category
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.publishDate)
+            tag
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.userID)
+            publish date
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.views)
+            publisher
+        </th>
+        <th>
+            Views
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.cat)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.publishDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.userID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.views)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tag)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.views)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.NewsID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.NewsID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.NewsID })
+            </td>
+        </tr>
+    }
 
 </table>

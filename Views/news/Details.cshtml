@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Details";
+    
 }
 
 <h2>Details</h2>
@@ -23,8 +24,7 @@
         </dt>
 
         <dd>
-            <img src="@Model.image" />
-            @Html.DisplayFor(model => model.image)
+            <img src="@Url.Content(Model.image)" height="270" width="200" />
         </dd>
 
         <dt>
@@ -72,7 +72,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.userID)
+            @ViewBag.user.displayname
         </dd>
 
         <dt>
