@@ -145,6 +145,8 @@
     <Compile Include="Controllers\categoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\newsController.cs" />
+    <Compile Include="Controllers\responsesController.cs" />
+    <Compile Include="Controllers\ticketsController.cs" />
     <Compile Include="Controllers\usersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -156,6 +158,9 @@
     <Compile Include="Models\newsModel.cs" />
     <Compile Include="Models\Register.cs" />
     <Compile Include="Controllers\tagsController.cs" />
+    <Compile Include="Models\response.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TheNews.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
@@ -276,6 +281,16 @@
     <Content Include="Views\tags\Edit.cshtml" />
     <Content Include="Views\tags\Index.cshtml" />
     <Content Include="Views\news\Latest.cshtml" />
+    <Content Include="Views\tickets\Create.cshtml" />
+    <Content Include="Views\tickets\Delete.cshtml" />
+    <Content Include="Views\tickets\Details.cshtml" />
+    <Content Include="Views\tickets\Edit.cshtml" />
+    <Content Include="Views\tickets\Index.cshtml" />
+    <Content Include="Views\responses\Create.cshtml" />
+    <Content Include="Views\responses\Delete.cshtml" />
+    <Content Include="Views\responses\Details.cshtml" />
+    <Content Include="Views\responses\Respond.cshtml" />
+    <Content Include="Views\responses\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
