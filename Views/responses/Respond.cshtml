@@ -15,6 +15,16 @@
     {
         priority = "Normal";
     }
+    string status = "";
+    if (ViewBag.targetTicket.status == 1)
+    {
+        status = "awaiting response";
+    }
+    else if (ViewBag.targetTicket.status == 3)
+    {
+        status = "open";
+    }
+
 }
 
 <h2>Edit</h2>
@@ -49,11 +59,17 @@
                 <input class="form-control" placeholder=@priority readonly />
             </div>
         </div>
+        <div class="form-group">
+            Status
+            <div class="col-md-10">
+                <input class="form-control" placeholder=@status readonly />
+            </div>
+        </div>
 
         <div class="form-group">
             Content
             <div class="col-md-10">
-                <textarea class="form-control" placeholder=@ViewBag.targetTicket.content></textarea>
+                <textarea class="form-control">@ViewBag.targetTicket.content</textarea>
             </div>
         </div>
         <br />
@@ -71,7 +87,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.content, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.content, new { @class = "form-control" } )
+                @Html.TextAreaFor(model => model.content, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.content, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -80,7 +96,8 @@
         <div class="form-group">
 
             <div class="col-md-10">
-                <input class="form-control" name="ticketid" value=@ViewBag.targetTicket.ID hidden />
+                <input class="form-control" name="ticketid" value=@ViewBag.targetTicket.ID readonly hidden />
+                <input class="form-control" name="ID" value=@ViewBag.targetTicket.responsid readonly hidden />
             </div>
         </div>
 

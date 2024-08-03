@@ -1,7 +1,12 @@
-﻿@model IEnumerable<WebApplication1.Models.ticket>
+﻿@using WebApplication1.Models
+@model IEnumerable<ticketlist>
+
 
 @{
     ViewBag.Title = "Index";
+
+    string status = "";
+    
 }
 
 <h2>Index</h2>
@@ -12,28 +17,38 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.title)
+            Title
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.content)
+           Sender username
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.content)
-        </td>
-        <td>
-            @Html.ActionLink("Respond", "Respond", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ticketTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.username)
+            </td>
+            <td>
+                @if (item.status == 1)
+                {
+                status = "awaiting response";
+                }
+                else if (item.status == 3)
+                {
+                status = "open";
+                }
+                @status
+            </td>
+            <td>
+                @Html.ActionLink("Respond", "Respond", new { id = item.ticketID })
+            </td>
+        </tr>
+    }
 
 </table>

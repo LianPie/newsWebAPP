@@ -34,8 +34,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="title" Type="nchar" MaxLength="10" />
-          <Property Name="content" Type="nchar" MaxLength="10" />
+          <Property Name="title" Type="nvarchar" MaxLength="150" />
+          <Property Name="content" Type="nvarchar(max)" />
           <Property Name="adminid" Type="int" />
           <Property Name="ticketid" Type="int" />
         </EntityType>
@@ -52,11 +52,12 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="content" Type="nvarchar(max)" Nullable="false" />
           <Property Name="priority" Type="int" Nullable="false" />
           <Property Name="senderid" Type="int" Nullable="false" />
           <Property Name="status" Type="int" />
+          <Property Name="responsid" Type="int" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -125,11 +126,12 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="priority" Type="Int32" Nullable="false" />
           <Property Name="senderid" Type="Int32" Nullable="false" />
           <Property Name="status" Type="Int32" />
+          <Property Name="responsid" Type="Int32" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -146,8 +148,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="title" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="content" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="title" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="adminid" Type="Int32" />
           <Property Name="ticketid" Type="Int32" />
         </EntityType>
@@ -195,6 +197,7 @@
           <EntitySetMapping Name="tickets">
             <EntityTypeMapping TypeName="newswebappModel.ticket">
               <MappingFragment StoreEntitySet="ticket">
+                <ScalarProperty Name="responsid" ColumnName="responsid" />
                 <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="senderid" ColumnName="senderid" />
                 <ScalarProperty Name="priority" ColumnName="priority" />

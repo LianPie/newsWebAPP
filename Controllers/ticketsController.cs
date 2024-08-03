@@ -23,7 +23,7 @@ namespace WebApplication1.Controllers
                 return View(db.tickets.Where(n => n.senderid == uid));
             }
             else
-                return RedirectToAction("Login");
+                return RedirectToAction("Login", "users");
         }
 
         // GET: tickets/Details/5
@@ -58,10 +58,11 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,title,content,priority,senderid,status")] ticket ticket)
+        public ActionResult Create([Bind(Include = "ID,title,content,priority,senderid,status,responsid")] ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                ticket.responsid = 0;
                 ticket.senderid = Convert.ToInt32(Session["Userid"]);
                 ticket.status = 1;
 
@@ -81,6 +82,8 @@ namespace WebApplication1.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ticket ticket = db.tickets.Find(id);
+            ViewBag.response = db.responses.Find(ticket.responsid);
+
             if (ticket == null)
             {
                 return HttpNotFound();
@@ -93,11 +96,13 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,title,content,priority,senderid,status")] ticket ticket)
+        public ActionResult Edit([Bind(Include = "ID,title,content,priority,senderid,status,responsid")] ticket ticket)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(ticket).State = EntityState.Modified;
+                var currentTicket = db.tickets.Find(ticket.ID);
+                currentTicket.content += "\n" + ticket.content;
+                currentTicket.status = 3;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

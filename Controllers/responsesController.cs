@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -17,30 +18,38 @@ namespace WebApplication1.Controllers
         // GET: responses
         public ActionResult Index()
         {
-            if (Convert.ToInt32(Session["Userrole"]) > 0)
-            {
-                return View(db.tickets.OrderByDescending(p => p.priority).Where(s=> s.status == 1).ToList()); 
-            }
-            else
-            {
-                @ViewBag.role = "user";
-            }
-
             if (Session["User"] != null)
             {
-                if (Session["Userid"] == null)
+                if (Convert.ToInt32(Session["Userrole"]) > 0)
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    var models = (from user in db.users // Access Users DbSet
+                                  join tickets in db.tickets on user.ID equals tickets.senderid into ticketsgroup // Join News DbSet
+                                  from tickets in ticketsgroup.DefaultIfEmpty() // Left outer join
+                                  where tickets != null // Filter based on existence of news record
+                                  select new ticketlist
+                                  {
+                                      username = user != null ? user.usename : null,
+                                      ticketID = tickets.ID, // Use null-conditional operator for missing news
+                                      ticketTitle = tickets.title,
+                                      priority = tickets.priority,
+                                      status = tickets.status
+                                  }).OrderByDescending(p => p.priority).Where(s => s.status == 1 || s.status ==3).ToList();
+
+
+                    return View(models);
                 }
-                user user = db.users.Find(Session["Userid"]);
-                if (user == null)
+                else
                 {
-                    return HttpNotFound();
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
                 }
-                return View(user);
             }
             else
-                return RedirectToAction("Login","users");
+                return RedirectToAction("Login", "users");
+
+        }
+        public ActionResult test()
+        {
+            return View(db.responses.ToList());
             
         }
 
@@ -74,7 +83,8 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-               
+                response.adminid = Convert.ToInt32(Session["Userid"]);
+                var targetTicket = db.tickets.Find(response.ticketid);
                 db.responses.Add(response);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -91,7 +101,8 @@ namespace WebApplication1.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ViewBag.targetTicket = db.tickets.Find(id);
-            ViewBag.sender = db.users.Find(db.tickets.Find(id).senderid);
+            var u = db.users.Find(db.tickets.Find(id).senderid);
+            ViewBag.sender = u.usename;
             
             if (ViewBag.targetTicket == null)
             {
@@ -109,18 +120,58 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 response.adminid = Convert.ToInt32(Session["Userid"]);
-                //wtf
-                db.responses.Add(response);
-                db.SaveChanges();
+                var targetTicket = db.tickets.Find(response.ticketid);
 
-                var targetTicket= db.tickets.Find(response.ticketid);
-                targetTicket.status = 0;
-                db.SaveChanges();
+                if (response.ID == 0)
+                {   
+                    db.responses.Add(response);
+                    targetTicket.status = 2;
+                    targetTicket.responsid = response.ID;
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException ex)
+                    {
+                        foreach (var validationErrors in ex.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                Console.WriteLine($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    var res = db.responses.Find(response.ID);
+                    res.content += "\n" + response.content;
+                    targetTicket.status = 2;
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException ex)
+                    {
+                        foreach (var validationErrors in ex.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                Console.WriteLine($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                            }
+                        }
+                    }
+                }
+
+
+                
                 return RedirectToAction("Index");
             }
             return View(response);
         }
+    
 
         // GET: responses/Delete/5
         public ActionResult Delete(int? id)

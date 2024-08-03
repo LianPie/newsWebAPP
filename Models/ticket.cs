@@ -20,5 +20,6 @@ namespace WebApplication1.Models
         public int priority { get; set; }
         public int senderid { get; set; }
         public Nullable<int> status { get; set; }
+        public Nullable<int> responsid { get; set; }
     }
 }
