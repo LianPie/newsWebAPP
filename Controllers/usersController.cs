@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace WebApplication1.Controllers
 {
@@ -88,6 +90,15 @@ namespace WebApplication1.Controllers
                     //if username is valid create user add to db
                     else
                     {
+                        // Hash the password
+                        using (var sha256 = SHA256.Create())
+                        {
+                            var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(user.password));
+                            user.password = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+                        }
+
+
+
                         db.users.Add(user);
                         db.SaveChanges();
 
@@ -134,6 +145,11 @@ namespace WebApplication1.Controllers
             {
                 //check if user exists
                 var existingUser = db.users.FirstOrDefault(u => u.usename == user.usename );
+                using (var sha256 = SHA256.Create())
+                {
+                    var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(user.password));
+                    user.password = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+                }
                 if (existingUser != null && existingUser.password == user.password)
                 {
                     //session start
@@ -182,6 +198,12 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Hash the password
+                using (var sha256 = SHA256.Create())
+                {
+                    var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(user.password));
+                    user.password = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+                }
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
