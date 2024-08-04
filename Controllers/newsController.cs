@@ -15,6 +15,15 @@ namespace WebApplication1.Controllers
     public class newsController : Controller
     {
         private newswebappEntities db = new newswebappEntities();
+        public static string GetUserIpAddress(HttpRequestBase request)
+        {
+            string ipAddress = request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            if (string.IsNullOrEmpty(ipAddress))
+            {
+                ipAddress = request.ServerVariables["REMOTE_ADDR"];
+            }
+            return ipAddress;
+        }
 
         // GET: news
         public ActionResult Index()
@@ -58,21 +67,31 @@ namespace WebApplication1.Controllers
             }
             var user = db.users.Find(news.userID);
             ViewBag.user = user;
-            news.views += 1;
-            db.SaveChanges();
-            /*
-            var key = Request.ServerVariables["REMOTE_ADDR"];
-            var now = DateTime.UtcNow;
 
-                if (now - View.LastVisited > _timeLimit)
+            // Get the user's IP address
+            string userIpAddress = GetUserIpAddress(Request);
+
+            // Check if this IP address has already viewed this article
+            DateTime thresholdDate = DateTime.Now.AddHours(-24);
+            bool hasViewed = db.viewlogs.Any(v => v.newsid == id && v.ipadd == userIpAddress && v.viewdate >= thresholdDate);
+            if (!hasViewed)
+            {
+                // Increment the view count
+                news.views++;
+                db.SaveChanges();
+
+                // Log the view
+                db.viewlogs.Add(new viewlog
                 {
-                    pageView.LastVisited = now;
-                    _pageViews[key] = pageView;
-                    return true; // View counted
-                }
-                return false; // View within time limit, not counted
-            */
+                    ipadd = userIpAddress,
+                    newsid = news.ID,
+                    viewdate = DateTime.Now
+                });
+                db.SaveChanges();
+            }
+
             return View(news);
+        
         }
 
         // GET: news/Create

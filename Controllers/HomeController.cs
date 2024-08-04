@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,7 +15,7 @@ namespace WebApplication1.Controllers
         public ActionResult Index()
         {
             ViewBag.newsCount = db.news.Count();
-            ViewBag.views = "";
+            ViewBag.views = db.viewlogs.Where(v => DbFunctions.TruncateTime(v.viewdate) == DateTime.Today).Count();
             setTitle();
             return View();
         }

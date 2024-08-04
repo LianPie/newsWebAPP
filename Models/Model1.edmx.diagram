@@ -11,6 +11,7 @@
         <EntityTypeShape EntityType="newswebappModel.ticket" Width="1.5" PointX="0.75" PointY="4.75" />
         <EntityTypeShape EntityType="newswebappModel.user" Width="1.5" PointX="2.75" PointY="4.75" />
         <EntityTypeShape EntityType="newswebappModel.response" Width="1.5" PointX="4.75" PointY="4.625" />
+        <EntityTypeShape EntityType="newswebappModel.viewlog" Width="1.5" PointX="3.25" PointY="7.25" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

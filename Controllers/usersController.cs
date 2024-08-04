@@ -204,7 +204,9 @@ namespace WebApplication1.Controllers
                     var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(user.password));
                     user.password = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
                 }
-                db.Entry(user).State = EntityState.Modified;
+                var u= db.users.Find(user.ID);
+                u.password = user.password;
+                u.displayname = user.displayname;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

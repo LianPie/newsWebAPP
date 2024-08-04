@@ -69,6 +69,15 @@
           <Property Name="displayname" Type="nvarchar" MaxLength="50" />
           <Property Name="role" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="viewlog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ipadd" Type="nvarchar(max)" />
+          <Property Name="newsid" Type="int" />
+          <Property Name="viewdate" Type="datetime" />
+        </EntityType>
         <EntityContainer Name="newswebappModelStoreContainer">
           <EntitySet Name="category" EntityType="Self.category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="news" EntityType="Self.news" Schema="dbo" store:Type="Tables" />
@@ -76,6 +85,7 @@
           <EntitySet Name="tag" EntityType="Self.tag" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ticket" EntityType="Self.ticket" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="viewlog" EntityType="Self.viewlog" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -88,6 +98,7 @@
           <EntitySet Name="tickets" EntityType="newswebappModel.ticket" />
           <EntitySet Name="users" EntityType="newswebappModel.user" />
           <EntitySet Name="responses" EntityType="newswebappModel.response" />
+          <EntitySet Name="viewlogs" EntityType="newswebappModel.viewlog" />
         </EntityContainer>
         <EntityType Name="category">
           <Key>
@@ -152,6 +163,15 @@
           <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="adminid" Type="Int32" />
           <Property Name="ticketid" Type="Int32" />
+        </EntityType>
+        <EntityType Name="viewlog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ipadd" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="newsid" Type="Int32" />
+          <Property Name="viewdate" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -225,6 +245,16 @@
                 <ScalarProperty Name="adminid" ColumnName="adminid" />
                 <ScalarProperty Name="content" ColumnName="content" />
                 <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="viewlogs">
+            <EntityTypeMapping TypeName="newswebappModel.viewlog">
+              <MappingFragment StoreEntitySet="viewlog">
+                <ScalarProperty Name="viewdate" ColumnName="viewdate" />
+                <ScalarProperty Name="newsid" ColumnName="newsid" />
+                <ScalarProperty Name="ipadd" ColumnName="ipadd" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
