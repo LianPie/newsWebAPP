@@ -16,12 +16,15 @@ namespace WebApplication1.Models
         // GET: tags
         public ActionResult Index()
         {
+            ViewBag.role = Convert.ToInt32(Session["Userrole"]);
             return View(db.tags.ToList());
         }
 
         // GET: tags/Details/5
         public ActionResult Details(int? id)
         {
+            ViewBag.role = Convert.ToInt32(Session["Userrole"]);
+            ViewBag.uid = Convert.ToInt32(Session["Userid"]);
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -75,16 +78,28 @@ namespace WebApplication1.Models
         // GET: tags/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Session["User"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Convert.ToInt32(Session["Userrole"]) == 1)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    tag tags = db.tags.Find(id);
+                    if (tags == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(tags);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
             }
-            tag tag = db.tags.Find(id);
-            if (tag == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tag);
+            else
+                return RedirectToAction("index", "home");
         }
 
         // POST: tags/Edit/5
@@ -106,16 +121,28 @@ namespace WebApplication1.Models
         // GET: tags/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Session["User"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Convert.ToInt32(Session["Userrole"]) == 1)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    tag tags = db.tags.Find(id);
+                    if (tags == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(tags);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
             }
-            tag tag = db.tags.Find(id);
-            if (tag == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tag);
+            else
+                return RedirectToAction("index", "home");
         }
 
         // POST: tags/Delete/5

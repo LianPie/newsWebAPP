@@ -29,9 +29,15 @@
             @Html.DisplayFor(modelItem => item.title)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+
+            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+            @if (ViewBag.role == 1)
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID })
+                <span>|</span>
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+
+            }
         </td>
     </tr>
 }

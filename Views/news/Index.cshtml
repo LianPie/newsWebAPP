@@ -4,6 +4,7 @@
 
 @{
     ViewBag.Title = "Index";
+    
 }
 
 <h2>Index</h2>
@@ -56,9 +57,17 @@
                 @Html.DisplayFor(modelItem => item.views)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.NewsID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.NewsID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.NewsID })
+
+                @Html.ActionLink("Read", "Details", new { id = item.NewsID })|
+                @if (ViewBag.role == 1 || ViewBag.uid == item.userID)
+                {
+
+                    @Html.ActionLink("Edit", "Edit", new { id = item.NewsID })
+                    <span>|</span>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.NewsID })
+
+                }
+
             </td>
         </tr>
     }

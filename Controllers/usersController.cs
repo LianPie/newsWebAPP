@@ -261,15 +261,20 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Hash the password
-                using (var sha256 = SHA256.Create())
-                {
-                    var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(user.password));
-                    user.password = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+                var u = db.users.Find(user.ID);
+
+                if (user.password != null){
+                    // Hash the password
+                    using (var sha256 = SHA256.Create())
+                    {
+                        var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(user.password));
+                        user.password = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+                        u.password = user.password;
+                    }
                 }
-                var u= db.users.Find(user.ID);
-                u.password = user.password;
+
                 u.displayname = user.displayname;
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

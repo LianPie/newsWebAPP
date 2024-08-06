@@ -28,6 +28,8 @@ namespace WebApplication1.Controllers
         // GET: news
         public ActionResult Index()
         {
+            ViewBag.role = Convert.ToInt32(Session["Userrole"]);
+            ViewBag.uid = Convert.ToInt32(Session["Userid"]);
             var models = (from user in db.users // Access Users DbSet
                           join news in db.news on user.ID equals news.userID into newsGroup // Join News DbSet
                           from news in newsGroup.DefaultIfEmpty() // Left outer join
@@ -35,6 +37,7 @@ namespace WebApplication1.Controllers
                           select new newsModel
                           {
                               DisplayName = user != null ? user.displayname : null,
+                              userID = user != null ? user.ID : 0,
                               NewsID = news.ID, // Use null-conditional operator for missing news
                               Title = news.title,
                               Image = news.image,
@@ -185,16 +188,34 @@ namespace WebApplication1.Controllers
         // GET: news/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Session["User"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Convert.ToInt32(Session["Userrole"]) == 1)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    news news = db.news.Find(id);
+                    if (news == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    else if ( news.userID == Convert.ToInt32(Session["Userid"]) || Convert.ToInt32(Session["Userrole"]) == 1)
+                    {
+                        return View(news);
+                    }
+                    else
+                        return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
             }
-            news news = db.news.Find(id);
-            if (news == null)
-            {
-                return HttpNotFound();
-            }
-            return View(news);
+            else
+                return RedirectToAction("index", "home");
+            
         }
 
         // POST: news/Edit/5
@@ -216,16 +237,33 @@ namespace WebApplication1.Controllers
         // GET: news/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Session["User"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Convert.ToInt32(Session["Userrole"]) == 1)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    news news = db.news.Find(id);
+                    if (news == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    else if (news.userID == Convert.ToInt32(Session["Userid"]) || Convert.ToInt32(Session["Userrole"]) == 1)
+                    {
+                        return View(news);
+                    }
+                    else
+                        return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
             }
-            news news = db.news.Find(id);
-            if (news == null)
-            {
-                return HttpNotFound();
-            }
-            return View(news);
+            else
+                return RedirectToAction("index", "home");
         }
 
         // POST: news/Delete/5

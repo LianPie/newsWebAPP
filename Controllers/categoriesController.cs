@@ -17,12 +17,15 @@ namespace WebApplication1.Controllers
         // GET: categories
         public ActionResult Index()
         {
+            ViewBag.role = Convert.ToInt32(Session["Userrole"]);
             return View(db.categories.ToList());
         }
 
         // GET: categories/Details/5
         public ActionResult Details(int? id)
         {
+            ViewBag.role = Convert.ToInt32(Session["Userrole"]);
+            ViewBag.uid = Convert.ToInt32(Session["Userid"]);
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -76,16 +79,28 @@ namespace WebApplication1.Controllers
         // GET: categories/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Session["User"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Convert.ToInt32(Session["Userrole"]) == 1)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    category category = db.categories.Find(id);
+                    if (category == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(category);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
             }
-            category category = db.categories.Find(id);
-            if (category == null)
-            {
-                return HttpNotFound();
-            }
-            return View(category);
+            else
+                return RedirectToAction("index", "home");
         }
 
         // POST: categories/Edit/5
@@ -107,16 +122,28 @@ namespace WebApplication1.Controllers
         // GET: categories/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Session["User"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Convert.ToInt32(Session["Userrole"]) == 1)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    category category = db.categories.Find(id);
+                    if (category == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(category);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
             }
-            category category = db.categories.Find(id);
-            if (category == null)
-            {
-                return HttpNotFound();
-            }
-            return View(category);
+            else
+                return RedirectToAction("index", "home");
         }
 
         // POST: categories/Delete/5

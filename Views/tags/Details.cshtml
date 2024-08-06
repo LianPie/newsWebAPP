@@ -12,9 +12,6 @@
             @Html.DisplayNameFor(model => model.title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.link)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.tag)
         </th>
         <th>
@@ -30,18 +27,21 @@
                 @Html.DisplayFor(modelItem => item.title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.link)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.tag)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.cat)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                @Html.ActionLink("Read", "../news/Details", new { id = item.ID })|
+                @if (ViewBag.role == 1 || ViewBag.uid == item.userID)
+                {
+
+                    @Html.ActionLink("Edit", "../news/Edit", new { id = item.ID })
+                    <span>|</span>
+                    @Html.ActionLink("Delete", "../news/Delete", new { id = item.ID })
+
+                }
             </td>
         </tr>
     }
