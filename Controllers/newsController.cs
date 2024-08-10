@@ -93,6 +93,7 @@ namespace WebApplication1.Controllers
                 db.SaveChanges();
             }
 
+            if (news.image == null) { news.image = "_"; }
             return View(news);
         
         }
@@ -144,6 +145,7 @@ namespace WebApplication1.Controllers
                         if (!new[] { ".jpg", ".jpeg", ".png" }.Contains(fileExtension))
                         {
                             ModelState.AddModelError("image", "Only JPG, JPEG, and PNG files are allowed.");
+                            return View();
                         }
                         else
                         {
@@ -190,8 +192,7 @@ namespace WebApplication1.Controllers
         {
             if (Session["User"] != null)
             {
-                if (Convert.ToInt32(Session["Userrole"]) == 1)
-                {
+            
                     if (id == null)
                     {
                         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -207,11 +208,7 @@ namespace WebApplication1.Controllers
                     }
                     else
                         return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
-                }
-                else
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
-                }
+                
             }
             else
                 return RedirectToAction("index", "home");
@@ -239,8 +236,6 @@ namespace WebApplication1.Controllers
         {
             if (Session["User"] != null)
             {
-                if (Convert.ToInt32(Session["Userrole"]) == 1)
-                {
                     if (id == null)
                     {
                         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -256,11 +251,7 @@ namespace WebApplication1.Controllers
                     }
                     else
                         return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
-                }
-                else
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
-                }
+                
             }
             else
                 return RedirectToAction("index", "home");

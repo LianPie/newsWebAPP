@@ -40,13 +40,19 @@
     </dl>
     <div class="col-md-offset-2 col-md-10">
         @Html.ActionLink("edit account details", "Edit", null, new { @class = "btn btn-outline-dark" })
-    
+
         @Html.ActionLink("Logout", "LogOut", null, new { @class = "btn btn-outline-dark" })
+
+        @if (@ViewBag.role == "admin")
+        {
+            @Html.ActionLink("Manage users", "allusers", null, new { @class = "btn btn-outline-dark" })
+        }
     </div>
     <br />
     <div class="col-md-offset-2 col-md-10">
         @Html.ActionLink("Delete Account", "Delete", null, new { @class = "btn btn-outline-dark" })
     </div>
-        </div>
+
+</div>
         }
 
