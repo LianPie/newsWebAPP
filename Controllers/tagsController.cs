@@ -44,7 +44,7 @@ namespace WebApplication1.Models
         {
             if (Session["User"] != null)
             {
-                if (Convert.ToInt32(Session["Userrole"]) == 1)
+                if (Convert.ToInt32(Session["Userrole"]) > 0)
                 {
                     return View();
                 }
@@ -80,7 +80,7 @@ namespace WebApplication1.Models
         {
             if (Session["User"] != null)
             {
-                if (Convert.ToInt32(Session["Userrole"]) == 1)
+                if (Convert.ToInt32(Session["Userrole"]) > 0)
                 {
                     if (id == null)
                     {
@@ -123,7 +123,7 @@ namespace WebApplication1.Models
         {
             if (Session["User"] != null)
             {
-                if (Convert.ToInt32(Session["Userrole"]) == 1)
+                if (Convert.ToInt32(Session["Userrole"]) > 0)
                 {
                     if (id == null)
                     {

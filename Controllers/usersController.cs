@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using WebApplication1.Models;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web.UI.WebControls;
 
 namespace WebApplication1.Controllers
 {
@@ -281,7 +282,52 @@ namespace WebApplication1.Controllers
             return View(user);
         }
 
-        
+        public ActionResult Edituser(int? id)
+        {
+            if (Session["User"] != null)
+            {
+
+                if (Convert.ToInt32(Session["Userrole"]) == 1)
+                {
+
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    user user = db.users.Find(id);
+                    if (user == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(user);
+                }
+                else
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+
+            }
+            else
+                return View("Login");
+        }
+           
+
+        // POST: tickets/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edituser([Bind(Include = "ID,usename,password,displayname,role")] user user)
+        {
+            if (ModelState.IsValid)
+            {
+                var currentuser = db.users.Find(user.ID);
+                currentuser.displayname = user.displayname;
+                currentuser.role = user.role;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(user);
+        }
+
 
         // GET: users/Delete/5
         public ActionResult Delete(int? id)

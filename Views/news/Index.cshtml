@@ -59,7 +59,7 @@
             <td>
 
                 @Html.ActionLink("Read", "Details", new { id = item.NewsID })|
-                @if (ViewBag.role == 1 || ViewBag.uid == item.userID)
+                @if (ViewBag.role > 0 || ViewBag.uid == item.userID)
                 {
 
                     @Html.ActionLink("Edit", "Edit", new { id = item.NewsID })

@@ -295,6 +295,7 @@
     <Content Include="Views\responses\Respond.cshtml" />
     <Content Include="Views\responses\Index.cshtml" />
     <Content Include="Views\responses\test.cshtml" />
+    <Content Include="Views\users\Edituser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

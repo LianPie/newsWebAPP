@@ -31,7 +31,7 @@
         <td>
 
             @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-            @if (ViewBag.role == 1)
+            @if (ViewBag.role > 0)
             {
                 @Html.ActionLink("Edit", "Edit", new { id = item.ID })
                 <span>|</span>

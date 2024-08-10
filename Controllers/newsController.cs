@@ -128,7 +128,10 @@ namespace WebApplication1.Controllers
                 if (Request.Files.Count > 0)
                 {
                     setLists();
-                   
+                    /*
+                    string x = news.tag;
+                    var y = news.tag[1];
+                   */
                     if (news.title != null && news.link != null && news.cat != null && news.tag != null)
                     {
                         var image = Request.Files[0];
@@ -202,7 +205,7 @@ namespace WebApplication1.Controllers
                     {
                         return HttpNotFound();
                     }
-                    else if ( news.userID == Convert.ToInt32(Session["Userid"]) || Convert.ToInt32(Session["Userrole"]) == 1)
+                    else if ( news.userID == Convert.ToInt32(Session["Userid"]) || Convert.ToInt32(Session["Userrole"]) > 0)
                     {
                         return View(news);
                     }
@@ -245,7 +248,7 @@ namespace WebApplication1.Controllers
                     {
                         return HttpNotFound();
                     }
-                    else if (news.userID == Convert.ToInt32(Session["Userid"]) || Convert.ToInt32(Session["Userrole"]) == 1)
+                    else if (news.userID == Convert.ToInt32(Session["Userid"]) || Convert.ToInt32(Session["Userrole"]) > 0)
                     {
                         return View(news);
                     }
