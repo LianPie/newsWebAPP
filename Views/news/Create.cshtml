@@ -41,7 +41,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">category</label>
             <div>
-                <select id="cat" name="cat" class="form-control" multiple>
+                <select id="cat" name="Cat" class="form-control" multiple>
                     @foreach (var item in ViewBag.categoryTitle)
                     {
                         <option value="@item.title">@item.title</option>
@@ -54,7 +54,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.tag, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <select id="tag" name="tag" class="form-control" multiple>
+                <select id="tag" name="Tags" class="form-control" multiple>
                     @foreach (var item in ViewBag.tagTitle)
                     {
                         <option value="@item.title">@item.title</option>

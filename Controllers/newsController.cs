@@ -121,19 +121,42 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,title,image,link,summary,cat,tag,publishDate,userID,Content,views")] news news)
+        public ActionResult Create([Bind(Include = "ID,title,image,link,summary,cat,tags,publishDate,userID,Content,views")] news news, List<string> Tags, List<string> Cat)
         {
             if (ModelState.IsValid)
             {
                 if (Request.Files.Count > 0)
                 {
                     setLists();
-                    /*
-                    string x = news.tag;
-                    var y = news.tag[1];
-                   */
-                    if (news.title != null && news.link != null && news.cat != null && news.tag != null)
+                    
+
+                    
+                   
+                    if (news.title != null && news.link != null && Cat != null && Tags != null)
                     {
+
+                        news.tag = "";
+                        foreach (string T in Tags)
+                        {
+                            if (T != Tags[0])
+                            {
+                                news.tag += " ,";
+                                news.tag += T;
+                            }
+                            else
+                                news.tag += T;
+                        }
+                        news.cat = "";
+                        foreach (string c in Cat)
+                        {
+                            if (c != Cat[0])
+                            {
+                                news.cat+= " ,";
+                                news.cat += c;
+                            }
+                            else
+                                news.cat += c;
+                        }
                         var image = Request.Files[0];
                         if (image.ContentLength > 1024 * 1024)
                         {
