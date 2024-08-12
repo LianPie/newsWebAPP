@@ -28,7 +28,12 @@ namespace WebApplication1.Controllers
         // GET: news
         public ActionResult Index()
         {
-            ViewBag.role = Convert.ToInt32(Session["Userrole"]);
+            string userrole = Convert.ToString(Session["Userrole"]);
+
+            if (userrole.Contains("tag&catManagment"))
+                ViewBag.role = 1;
+            else ViewBag.role = 0;
+
             ViewBag.uid = Convert.ToInt32(Session["Userid"]);
             var models = (from user in db.users // Access Users DbSet
                           join news in db.news on user.ID equals news.userID into newsGroup // Join News DbSet
@@ -103,14 +108,17 @@ namespace WebApplication1.Controllers
         {
             if (Session["User"] != null)
             {
-                setLists();
-              //var models=  new Tuple<List<category>, List<tag>>(cat, tags);
-                return View();
-            }
-            if (Session["User"] != null)
-            {
-                ViewBag.categoryTitle = db.categories.ToList();
-                return View();
+                string userrole = Convert.ToString(Session["Userrole"]);
+
+                if (userrole.Contains("addNews"))
+                {
+                    ViewBag.categoryTitle = db.categories.ToList();
+                    return View();
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
             }
             else
                 return RedirectToAction("login", "users");
@@ -128,9 +136,6 @@ namespace WebApplication1.Controllers
                 if (Request.Files.Count > 0)
                 {
                     setLists();
-                    
-
-                    
                    
                     if (news.title != null && news.link != null && Cat != null && Tags != null)
                     {
@@ -218,6 +223,8 @@ namespace WebApplication1.Controllers
         {
             if (Session["User"] != null)
             {
+                    string userrole = Convert.ToString(Session["Userrole"]);
+
             
                     if (id == null)
                     {
@@ -228,7 +235,7 @@ namespace WebApplication1.Controllers
                     {
                         return HttpNotFound();
                     }
-                    else if ( news.userID == Convert.ToInt32(Session["Userid"]) || Convert.ToInt32(Session["Userrole"]) > 0)
+                    else if ( news.userID == Convert.ToInt32(Session["Userid"]) || userrole.Contains("newsManagement"))
                     {
                         return View(news);
                     }
@@ -273,7 +280,7 @@ namespace WebApplication1.Controllers
                     }
                     else if (news.userID == Convert.ToInt32(Session["Userid"]) || Convert.ToInt32(Session["Userrole"]) > 0)
                     {
-                        return View(news);
+                    return View(news);
                     }
                     else
                         return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);

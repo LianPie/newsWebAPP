@@ -85,8 +85,14 @@ namespace WebApplication1.Controllers
 
 
         // GET: users
-        public ActionResult Index()
-        {   if (Convert.ToInt32(Session["Userrole"]) > 0)
+        public ActionResult Index() {
+
+            string userrole = Convert.ToString(Session["Userrole"]);
+            if (userrole.Contains("addNews"))
+            {
+                @ViewBag.role = "jornalist";
+            }
+            if (userrole.Contains("newsManagement") || userrole.Contains("tag&catManagment") )
             {
                 @ViewBag.role = "admin";
             }
@@ -116,7 +122,8 @@ namespace WebApplication1.Controllers
         {
             if (Session["User"] != null)
             {
-                if (Convert.ToInt32(Session["Userrole"]) == 1)
+                string userrole = Convert.ToString(Session["Userrole"]);
+                if (userrole.Contains("userManagment"))
                 {
                     return View(db.users.ToList());
                 }
@@ -152,6 +159,8 @@ namespace WebApplication1.Controllers
                 //checks username and password field in form
                 if (user.usename != null && user.password != null)
                 {
+                    user.role = "none";
+
                     if (check != null)
                     {
                         ModelState.AddModelError("", " username already exists");
@@ -286,8 +295,9 @@ namespace WebApplication1.Controllers
         {
             if (Session["User"] != null)
             {
+                string userrole = Convert.ToString(Session["Userrole"]);
 
-                if (Convert.ToInt32(Session["Userrole"]) == 1)
+                if (userrole.Contains("userManagment"))
                 {
 
                     if (id == null)
@@ -306,7 +316,7 @@ namespace WebApplication1.Controllers
 
             }
             else
-                return View("Login");
+                return RedirectToAction("Login");
         }
            
 
@@ -315,10 +325,21 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edituser([Bind(Include = "ID,usename,password,displayname,role")] user user)
+        public ActionResult Edituser([Bind(Include = "ID,usename,password,displayname,role")] user user, List<string> roles)
         {
             if (ModelState.IsValid)
             {
+                user.role = "";
+                foreach (string r in roles)
+                {
+                    if (r != roles[0])
+                    {
+                        user.role += ",";
+                        user.role += r;
+                    }
+                    else
+                        user.role += r;
+                }
                 var currentuser = db.users.Find(user.ID);
                 currentuser.displayname = user.displayname;
                 currentuser.role = user.role;

@@ -17,14 +17,23 @@ namespace WebApplication1.Controllers
         // GET: categories
         public ActionResult Index()
         {
-            ViewBag.role = Convert.ToInt32(Session["Userrole"]);
+            string userrole = Convert.ToString(Session["Userrole"]);
+
+            if (userrole.Contains("tag&catManagment"))
+                ViewBag.role = 1;
+            else ViewBag.role = 0;
             return View(db.categories.ToList());
         }
 
         // GET: categories/Details/5
         public ActionResult Details(int? id)
         {
-            ViewBag.role = Convert.ToInt32(Session["Userrole"]);
+            string userrole = Convert.ToString(Session["Userrole"]);
+
+            if (userrole.Contains("tag&catManagment"))
+                ViewBag.role = 1;
+            else ViewBag.role = 0;
+
             ViewBag.uid = Convert.ToInt32(Session["Userid"]);
             if (id == null)
             {
@@ -81,7 +90,9 @@ namespace WebApplication1.Controllers
         {
             if (Session["User"] != null)
             {
-                if (Convert.ToInt32(Session["Userrole"]) > 0)
+                string userrole = Convert.ToString(Session["Userrole"]);
+
+                if (userrole.Contains("tag&catManagment"))
                 {
                     if (id == null)
                     {
@@ -124,7 +135,9 @@ namespace WebApplication1.Controllers
         {
             if (Session["User"] != null)
             {
-                if (Convert.ToInt32(Session["Userrole"]) > 0)
+                string userrole = Convert.ToString(Session["Userrole"]);
+
+                if (userrole.Contains("tag&catManagment"))
                 {
                     if (id == null)
                     {

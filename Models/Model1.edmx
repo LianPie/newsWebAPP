@@ -67,7 +67,7 @@
           <Property Name="usename" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="password" Type="nvarchar(max)" Nullable="false" />
           <Property Name="displayname" Type="nvarchar" MaxLength="50" />
-          <Property Name="role" Type="int" Nullable="false" />
+          <Property Name="role" Type="nvarchar" MaxLength="70" Nullable="false" />
         </EntityType>
         <EntityType Name="viewlog">
           <Key>
@@ -152,7 +152,7 @@
           <Property Name="usename" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="displayname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="role" Type="Int32" Nullable="false" />
+          <Property Name="role" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="response">
           <Key>
