@@ -17,68 +17,84 @@ namespace WebApplication1.Controllers
     {
         private newswebappEntities db = new newswebappEntities();
 
-        private void ValidatePassword(string password, string confirmPassword)
+        private int ValidatePassword(string password, string confirmPassword)
         {
             if (string.IsNullOrWhiteSpace(password))
             {
                 ModelState.AddModelError("", "Password cannot be empty");
+                return 1;
+
             }
             else
             {
                 if (password != confirmPassword)
                 {
                     ModelState.AddModelError("", "Passwords don't match");
+                    return 1;
+
                 }
 
                 if (password.Length < 8)
                 {
                     ModelState.AddModelError("", "Password must be at least 8 characters long");
+                    return 1;
                 }
 
                 if (!password.Any(char.IsUpper))
                 {
                     ModelState.AddModelError("", "Password must contain at least one uppercase letter");
+                    return 1;
                 }
 
                 if (!password.Any(char.IsLower))
                 {
                     ModelState.AddModelError("", "Password must contain at least one lowercase letter");
+                    return 1;
                 }
 
                 if (!password.Any(char.IsDigit))
                 {
                     ModelState.AddModelError("", "Password must contain at least one digit");
+                    return 1;
                 }
 
                 if (!password.Any(ch => !char.IsLetterOrDigit(ch)))
                 {
                     ModelState.AddModelError("", "Password must contain at least one special character");
+                    return 1;
                 }
+
+                return 0;
             }
         }
 
-        private void ValidateUsername(string username)
+        private int ValidateUsername(string username)
         {
             if (string.IsNullOrWhiteSpace(username))
             {
                 ModelState.AddModelError("", "Username cannot be empty");
+                return 1;
             }
             else
             {
                 if (username.Length < 3)
                 {
                     ModelState.AddModelError("", "Username must be at least 3 characters long");
+                    return 1;
                 }
 
                 if (username.Length > 20)
                 {
                     ModelState.AddModelError("", "Username must not exceed 20 characters");
+                    return 1;
                 }
 
                 if (!username.All(char.IsLetterOrDigit))
                 {
                     ModelState.AddModelError("", "Username can only contain letters and digits");
+                    return 1;
                 }
+                return 0;
             }
 
         }
@@ -152,8 +168,13 @@ namespace WebApplication1.Controllers
         {   
             if (ModelState.IsValid)
             {
-                ValidatePassword(user.password, Request.Form["ConfirmPassword"]);
-                ValidateUsername(user.usename);
+                var cpass = Request.Form["ConfirmPassword"];
+                var valpass = ValidatePassword(user.password, cpass);
+                var valuser = ValidateUsername(user.usename);
+                if (valpass == 1 || valuser == 1)
+                {
+                    return View();
+                }
                 //check if the username exists
                 var check = db.users.FirstOrDefault(u => u.usename == user.usename);
                 //checks username and password field in form
