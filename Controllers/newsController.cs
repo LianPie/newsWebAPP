@@ -64,6 +64,9 @@ namespace WebApplication1.Controllers
         // GET: news/Details/5
         public ActionResult Details(int? id)
         {
+            string userrole = Convert.ToString(Session["Userrole"]);
+            ViewBag.role = userrole.Contains("tag&catManagment") ? 1 : 0;
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -112,7 +115,7 @@ namespace WebApplication1.Controllers
 
                 if (userrole.Contains("addNews"))
                 {
-                    ViewBag.categoryTitle = db.categories.ToList();
+                    setLists();
                     return View();
                 }
                 else
@@ -176,7 +179,9 @@ namespace WebApplication1.Controllers
                         if (!new[] { ".jpg", ".jpeg", ".png" }.Contains(fileExtension))
                         {
                             ModelState.AddModelError("image", "Only JPG, JPEG, and PNG files are allowed.");
+                            news.image = "";
                             return View();
+
                         }
                         else
                         {
@@ -224,8 +229,8 @@ namespace WebApplication1.Controllers
             if (Session["User"] != null)
             {
                     string userrole = Convert.ToString(Session["Userrole"]);
-
-            
+                    setLists();
+                
                     if (id == null)
                     {
                         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -253,11 +258,82 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,title,image,link,summary,cat,tag,publishDate,userID,Content,views")] news news)
+        public ActionResult Edit([Bind(Include = "ID,title,image,link,summary,cat,tag,publishDate,userID,Content,views")] news news, List<string> Tags, List<string> Cat)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(news).State = EntityState.Modified;
+                
+                news.cat = "";
+                if (Tags != null)
+                {
+                    news.tag = "";
+                    foreach (string T in Tags)
+                    {
+                        if (T != Tags[0])
+                        {
+                            news.tag += " ,";
+                            news.tag += T;
+                        }
+                        else
+                            news.tag += T;
+                    }
+                }
+                if (Cat != null){
+                    foreach (string c in Cat)
+                    {
+                        if (c != Cat[0])
+                        {
+                            news.cat += " ,";
+                            news.cat += c;
+                        }
+                        else
+                            news.cat += c;
+                    }
+                }
+                var image = Request.Files[0];
+                if (image.ContentLength > 1024 * 1024)
+                {
+                    //check if fields are empty
+                    ModelState.AddModelError("imageFile", "File size cannot exceed 1MB.");
+                    return RedirectToAction("Index");
+                }
+
+                // Check file extension
+                string fileExtension = Path.GetExtension(image.FileName).ToLower();
+                //if (fileExtension != ".jpg" || fileExtension != ".jpeg" || fileExtension != ".png")
+                if (!new[] { ".jpg", ".jpeg", ".png" }.Contains(fileExtension))
+                {
+                    ModelState.AddModelError("image", "Only JPG, JPEG, and PNG files are allowed.");
+                    news.image = "";
+                    return View();
+
+                }
+                else
+                {
+                    int length = 10; // Desired length of the random string
+                    string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                    char[] chars = new char[length];
+                    Random rand = new Random();
+                    string imgname = "";
+                    for (int i = 0; i < length; i++)
+                    {
+                        chars[i] = allowedChars[rand.Next(0, allowedChars.Length)];
+                        imgname += "" + chars[i];
+                    }
+                    var path = $"~/Media/news/" + imgname + fileExtension;
+                    image.SaveAs(Server.MapPath(path));
+                    news.image = path;
+                }
+
+                //db op
+                var curnews = db.news.Find(news.ID);
+                curnews.title = news.title != null ? news.title : curnews.title;
+                curnews.image = news.image != null ? news.image : curnews.image;
+                curnews.summary = news.summary != null ? news.summary : curnews.summary;
+                curnews.Content = news.Content != null ? news.Content : curnews.Content;
+                curnews.link = news.link != null ? news.link : curnews.link;
+                curnews.tag = news.tag != null ? news.tag : curnews.tag;
+                curnews.cat = news.cat != null ? news.cat : curnews.cat;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

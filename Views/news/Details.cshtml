@@ -94,6 +94,12 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @if (@ViewBag.role == 1)
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID })
+    <span>
+        |
+    </span>
+    }
     @Html.ActionLink("Back to List", "Index")
 </p>
